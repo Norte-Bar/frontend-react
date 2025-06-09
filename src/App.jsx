@@ -8,9 +8,14 @@ function App() {
 
   return (
     <BrowserRouter>
-    <Header/>
+      <Header />
       <Routes>
-        <Route path="/" element={<Sobre />}></Route>
+        <Route path="/" element={
+          <>
+            <Sobre />
+            <Reserva /> 
+          </>
+        } />
         <Route path="/reserva" element={<Reserva />}></Route>
         <Route path="*" element={<h1>404 - Página não encontrada</h1>} />
       </Routes>
