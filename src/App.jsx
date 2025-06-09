@@ -8,6 +8,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <Header/>
       <Routes>
         <Route path="/" element={<Sobre />}></Route>
         <Route path="/reserva" element={<Reserva />}></Route>

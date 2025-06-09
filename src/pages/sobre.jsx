@@ -10,7 +10,7 @@ function Sobre() {
 
   return (
     <>
-      <h1>Sobre</h1>
+      <h1> Estou no Sobre</h1>
       <button onClick={irParaReserva}>Reserva</button>
     </>
   )

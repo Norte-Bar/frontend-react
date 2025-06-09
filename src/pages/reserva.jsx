@@ -9,7 +9,7 @@ function Reserva() {
 
   return (
     <>
-      <h1>Reserva</h1>
+      <h1> Estou na pagina Reserva</h1>
       <button onClick={irParaSobre}>Sobre</button>
     </>
   )
