@@ -6,6 +6,7 @@ import Login from "./pages/admin/login";
 import HeaderAdmin from "./components/admin/headerAdmin";
 import { AuthProvider } from "./context/AuthContext";
 import SideBar from "./components/admin/sidebar";
+import Mesas from "./pages/admin/mesas";
 
 function App() {
 	return (
@@ -65,7 +66,7 @@ const PrivateRoutes = () => {
 				<Route index element={<Login />} />
 				<Route element={<SideBar />}>
 					<Route path="dashboard" element={<h1>Esse é o dashboard</h1>}></Route>
-					<Route path="mesas" element={<h1>Essa é as mesas</h1>}></Route>
+					<Route path="mesas" element={<Mesas />}></Route>
 					<Route path="comidas" element={<h1>Essas são as comidas</h1>}></Route>
 					<Route path="pedidos" element={<h1>Esses são os pedidos</h1>}></Route>
 					<Route path="reservas" element={<h1>Essas são as reservas</h1>}></Route>
