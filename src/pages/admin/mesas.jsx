@@ -8,10 +8,10 @@ export default function Mesas() {
 	const [showDialog, setShowDialog] = useState(false);
 	const [form, setForm] = useState({ numero: "", capacidade: "", status: "0" });
 	const { token } = useAuth();
-	const api = "http://localhost:8080/";
+	const api = "http://localhost:8080";
 
 	useEffect(() => {
-		fetch(api + "mesa", {
+		fetch(api + "/mesa", {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -21,7 +21,7 @@ export default function Mesas() {
 	}, [token]);
 
 	const fetchMesas = () => {
-		fetch(api + "mesa", {
+		fetch(api + "/mesa", {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 			.then((res) => res.json())
@@ -42,7 +42,7 @@ export default function Mesas() {
 
 	const handleSubmit = () => {
 		const method = selectedMesa ? "PUT" : "POST";
-		const url = selectedMesa ? `/api/mesas/${selectedMesa.id}` : "/api/mesas";
+		const url = selectedMesa ? `${api}/mesa/${selectedMesa.id}` : `${api}/mesa`;
 
 		fetch(url, {
 			method,
@@ -59,7 +59,7 @@ export default function Mesas() {
 
 	const handleDelete = (id) => {
 		if (confirm("Tem certeza que deseja excluir esta mesa?")) {
-			fetch(`/api/mesas/${id}`, {
+			fetch(`${api}/mesa/${id}`, {
 				method: "DELETE",
 				headers: { Authorization: `Bearer ${token}` },
 			}).then(() => fetchMesas());
@@ -93,8 +93,12 @@ export default function Mesas() {
 			</div>
 
 			{showDialog && (
-				<div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex justify-center items-center z-50" onClick={() => setShowDialog(false)}>
-					<div className="bg-white rounded-2xl p-8 w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
+				<div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50" onClick={() => setShowDialog(false)}>
+					<div className="relative bg-white rounded-2xl p-8 w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
+						<button onClick={() => setShowDialog(false)} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold cursor-pointer" aria-label="Fechar">
+							×
+						</button>
+
 						<h2 className="text-3xl font-bold mb-6 text-gray-900">{selectedMesa ? "Editar Mesa" : "Cadastrar Mesa"}</h2>
 
 						<div className="space-y-5">
@@ -116,7 +120,7 @@ export default function Mesas() {
 								</select>
 							</div>
 
-							<button onClick={handleSubmit} className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition">
+							<button onClick={handleSubmit} className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition cursor-pointer">
 								Salvar
 							</button>
 						</div>

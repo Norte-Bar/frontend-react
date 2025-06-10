@@ -60,9 +60,9 @@ function Login() {
 
 	return (
 		<>
-			<header className={`bg-blue-950 p-4 flex justify-center items-center shadow-md`}>
+			{/* <header className={`bg-blue-950 p-4 flex justify-center items-center shadow-md`}>
 				<h1 className="text-2xl font-semibold text-white">NORTE BAR</h1>
-			</header>
+			</header> */}
 			<MainContainer>
 				<div className="max-w-xs mx-auto p-6 border rounded-lg shadow bg-white">
 					<h2 className="text-xl font-bold mb-4 text-center">Login</h2>
