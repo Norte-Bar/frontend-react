@@ -1,23 +1,24 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Pencil, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Mesas() {
 	const [mesas, setMesas] = useState([]);
 	const [selectedMesa, setSelectedMesa] = useState(null);
 	const [showDialog, setShowDialog] = useState(false);
 	const [form, setForm] = useState({ numero: "", capacidade: "", status: "0" });
-	const { token } = useAuth();
+	const { token, logout, tokenTaExpirado } = useAuth();
 	const api = "http://localhost:8080";
+    const navigate = useNavigate();
+
+    if(tokenTaExpirado()) {
+        logout();
+		navigate("/admin");
+    }
 
 	useEffect(() => {
-		fetch(api + "/mesa", {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		})
-			.then((res) => res.json())
-			.then(setMesas);
+		fetchMesas();
 	}, [token]);
 
 	const fetchMesas = () => {
