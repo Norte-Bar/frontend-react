@@ -8,12 +8,12 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Header />
       <Routes>
         <Route path="/" element={
           <>
-            <Sobre />
             <Reserva /> 
+            <Header />
+            <Sobre />
           </>
         } />
         <Route path="/reserva" element={<Reserva />}></Route>
