@@ -4,47 +4,76 @@ import { createContext, useContext, useEffect, useState } from "react";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-    const [token, setToken] = useState(null);
-    const [idLogado, setIdLogado] = useState(null);
+	const [token, setToken] = useState(null);
+	const [idLogado, setIdLogado] = useState(null);
+	const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        const temToken = localStorage.getItem('token');
+	useEffect(() => {
+		const temToken = localStorage.getItem("token");
 
-        if(temToken) {
-            setToken(temToken);
-            setIdLogado(jwtDecode(temToken).id);
-        }
-    }, [])
+		if (temToken) {
+			if (!tokenEstaExpirado(temToken)) {
+				setToken(temToken);
+				try {
+					setIdLogado(jwtDecode(temToken).id);
+				} catch (error) {
+					console.error("Erro ao decodificar token:", error);
+					logout();
+				}
+			} else {
+				// Token expirado, remove do localStorage
+				localStorage.removeItem("token");
+			}
+		}
 
-    const login = (newToken) => {
-        localStorage.setItem('token', newToken);
-        setToken(newToken);
-        setIdLogado(jwtDecode(newToken).id);
-    };
+		setIsLoading(false);
+	}, []);
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        setToken(null);
-        setIdLogado(null);
-    };
+	const tokenEstaExpirado = (tokenToCheck = token) => {
+		if (!tokenToCheck) return true;
 
-    const tokenTaExpirado = () => {
-        try {
-            const decoded = jwtDecode(token);
-            const now = Math.floor(Date.now() / 1000);
-            return decoded.exp < now
-        } catch (error) {
-            return true
-        }
-    }
+		try {
+			const decoded = jwtDecode(tokenToCheck);
+			const now = Math.floor(Date.now() / 1000);
+			return decoded.exp < now;
+		} catch (error) {
+			return true;
+		}
+	};
 
-    return (
-        <AuthContext.Provider value={{ token, idLogado, login, logout, tokenTaExpirado }}>
-            {children}
-        </AuthContext.Provider>
-    )
+	const login = (newToken) => {
+		if (!newToken) {
+			console.error("Token inválido fornecido para login");
+			return;
+		}
+
+		try {
+			const decoded = jwtDecode(newToken);
+
+			localStorage.setItem("token", newToken);
+			setToken(newToken);
+			setIdLogado(decoded.id);
+		} catch (error) {
+			console.error("Erro ao processar token no login:", error);
+			throw new Error("Token inválido");
+		}
+	};
+
+	const logout = () => {
+		localStorage.removeItem("token");
+		setToken(null);
+		setIdLogado(null);
+	};
+
+	const isAuthenticated = token && !tokenEstaExpirado();
+
+	return <AuthContext.Provider value={{ token, idLogado, login, logout, tokenTaExpirado: tokenEstaExpirado, isAuthenticated, isLoading }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
-    return useContext(AuthContext);
+	const context = useContext(AuthContext);
+	if (!context) {
+		throw new Error("useAuth deve ser usado dentro de um AuthProvider");
+	}
+	return context;
 }

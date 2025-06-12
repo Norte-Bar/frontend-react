@@ -1,22 +1,81 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/header";
 import Sobre from "./pages/sobre";
 import Reserva from "./pages/reserva";
 import Login from "./pages/admin/login";
 import HeaderAdmin from "./components/admin/headerAdmin";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import SideBar from "./components/admin/sidebar";
 import Mesas from "./pages/admin/mesas";
 import Comidas from "./pages/admin/comidas";
 import Pedidos from "./pages/admin/pedidos";
+
+const LoadingSpinner = () => (
+	<div
+		style={{
+			display: "flex",
+			justifyContent: "center",
+			alignItems: "center",
+			height: "100vh",
+			flexDirection: "column",
+		}}>
+		<div
+			style={{
+				border: "4px solid #f3f3f3",
+				borderTop: "4px solid #3498db",
+				borderRadius: "50%",
+				width: "40px",
+				height: "40px",
+				animation: "spin 2s linear infinite",
+				marginBottom: "20px",
+			}}></div>
+		<div>Carregando...</div>
+		<style>
+			{`
+				@keyframes spin {
+					0% { transform: rotate(0deg); }
+					100% { transform: rotate(360deg); }
+				}
+			`}
+		</style>
+	</div>
+);
+
+const ProtectedRoute = ({ children }) => {
+	const { isAuthenticated, isLoading } = useAuth();
+
+	if (isLoading) {
+		return <LoadingSpinner />;
+	}
+
+	if (!isAuthenticated) {
+		return <Navigate to="/admin" replace />;
+	}
+
+	return children;
+};
+
+const LoginRoute = () => {
+	const { isAuthenticated, isLoading } = useAuth();
+
+	if (isLoading) {
+		return <LoadingSpinner />;
+	}
+
+	if (isAuthenticated) {
+		return <Navigate to="/admin/dashboard" replace />;
+	}
+
+	return <Login />;
+};
 
 function App() {
 	return (
 		<AuthProvider>
 			<BrowserRouter>
 				<Routes>
-					<Route path="/admin/*" element={<PrivateRoutes />}></Route>
-					<Route path="/*" element={<PublicRoutes />}></Route>
+					<Route path="/admin/*" element={<PrivateRoutes />} />
+					<Route path="/*" element={<PublicRoutes />} />
 				</Routes>
 			</BrowserRouter>
 		</AuthProvider>
@@ -52,30 +111,151 @@ const PublicRoutes = () => {
 	);
 };
 
-const PrivateLayout = ({ children }) => {
+const AdminLayout = ({ children }) => {
 	return (
-		<>
-			<HeaderAdmin></HeaderAdmin>
-			{children}
-		</>
+		<div className="min-h-screen bg-gray-50">
+			<HeaderAdmin />
+			<div className="flex">
+				<SideBar />
+				<main className="flex-1">{children}</main>
+			</div>
+		</div>
 	);
 };
 
+// const PrivateRoutes = () => {
+// 	return (
+// 		<PrivateLayout>
+// 			<Routes>
+// 				{/* Rota de login - redireciona se já estiver logado */}
+// 				<Route index element={<LoginRoute />} />
+
+// 				{/* Rotas protegidas */}
+// 				<Route
+// 					path="dashboard"
+// 					element={
+// 						<ProtectedRoute>
+// 							<SideBar />
+// 						</ProtectedRoute>
+// 					}>
+// 					<Route index element={<h1>Esse é o dashboard</h1>} />
+// 				</Route>
+
+// 				<Route
+// 					element={
+// 						<ProtectedRoute>
+// 							<SideBar />
+// 						</ProtectedRoute>
+// 					}>
+// 					<Route path="mesas" element={<Mesas />} />
+// 					<Route path="comidas" element={<Comidas />} />
+// 					<Route path="pedidos" element={<Pedidos />} />
+// 					<Route path="reservas" element={<h1>Essas são as reservas</h1>} />
+// 					<Route path="feedback" element={<h1>Esses são os feedbacks</h1>} />
+// 				</Route>
+
+// 				{/* Rota 404 para admin */}
+// 				<Route path="*" element={<h1>404 - Página administrativa não encontrada</h1>} />
+// 			</Routes>
+// 		</PrivateLayout>
+// 	);
+// };
+
 const PrivateRoutes = () => {
 	return (
-		<PrivateLayout>
-			<Routes>
-				<Route index element={<Login />} />
-				<Route element={<SideBar />}>
-					<Route path="dashboard" element={<h1>Esse é o dashboard</h1>}></Route>
-					<Route path="mesas" element={<Mesas />}></Route>
-					<Route path="comidas" element={<Comidas />}></Route>
-					<Route path="pedidos" element={<Pedidos />}></Route>
-					<Route path="reservas" element={<h1>Essas são as reservas</h1>}></Route>
-					<Route path="feedback" element={<h1>Esses são os feedbacks</h1>}></Route>
-				</Route>
-			</Routes>
-		</PrivateLayout>
+		<Routes>
+			{/* Rota de login - sem header/sidebar */}
+			<Route index element={<LoginRoute />} />
+
+			{/* Todas as rotas protegidas com AdminLayout */}
+			<Route
+				path="dashboard"
+				element={
+					<ProtectedRoute>
+						<AdminLayout>
+							<div className="bg-white rounded-lg shadow-sm p-6">
+								<h1 className="text-2xl font-bold text-gray-800 mb-4">Dashboard</h1>
+								<p className="text-gray-600">Bem-vindo ao painel administrativo do Norte Bar!</p>
+							</div>
+						</AdminLayout>
+					</ProtectedRoute>
+				}
+			/>
+
+			<Route
+				path="mesas"
+				element={
+					<ProtectedRoute>
+						<AdminLayout>
+							<Mesas />
+						</AdminLayout>
+					</ProtectedRoute>
+				}
+			/>
+
+			<Route
+				path="comidas"
+				element={
+					<ProtectedRoute>
+						<AdminLayout>
+							<Comidas />
+						</AdminLayout>
+					</ProtectedRoute>
+				}
+			/>
+
+			<Route
+				path="pedidos"
+				element={
+					<ProtectedRoute>
+						<AdminLayout>
+							<Pedidos />
+						</AdminLayout>
+					</ProtectedRoute>
+				}
+			/>
+
+			<Route
+				path="reservas"
+				element={
+					<ProtectedRoute>
+						<AdminLayout>
+							<div className="bg-white rounded-lg shadow-sm p-6">
+								<h1 className="text-2xl font-bold text-gray-800 mb-4">Reservas</h1>
+								<p className="text-gray-600">Gerencie as reservas do estabelecimento.</p>
+							</div>
+						</AdminLayout>
+					</ProtectedRoute>
+				}
+			/>
+
+			<Route
+				path="feedback"
+				element={
+					<ProtectedRoute>
+						<AdminLayout>
+							<div className="bg-white rounded-lg shadow-sm p-6">
+								<h1 className="text-2xl font-bold text-gray-800 mb-4">Feedbacks</h1>
+								<p className="text-gray-600">Visualize os feedbacks dos clientes.</p>
+							</div>
+						</AdminLayout>
+					</ProtectedRoute>
+				}
+			/>
+
+			{/* Rota 404 para admin */}
+			<Route
+				path="*"
+				element={
+					<div className="min-h-screen flex items-center justify-center">
+						<div className="text-center">
+							<h1 className="text-4xl font-bold text-gray-800 mb-4">404</h1>
+							<p className="text-gray-600">Página administrativa não encontrada</p>
+						</div>
+					</div>
+				}
+			/>
+		</Routes>
 	);
 };
 
