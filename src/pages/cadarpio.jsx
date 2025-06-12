@@ -1,14 +1,13 @@
-// src/pages/CardapioPage.jsx
-
 import React from 'react';
-import menuData from './data'; // Importa os dados do cardápio
-import MenuSection from '../components/MenuSection'; // Importa o componente de seção
-import '../components/Menu.css'; // Importa os estilos gerais do cardápio
+import menuData from './data';
+import MenuSection from '../components/MenuSection';
 
-function cardapio() {
+function Cardapio() {
   return (
-    <div className="menu-container">
-      <h1 className="menu-title">Nosso Cardápio Digital</h1>
+    <div className="max-w-6xl mx-auto px-6 py-12 font-sans bg-gradient-to-br from-[#12263a] to-[#1e3a5f] rounded-2xl shadow-xl">
+      <h1 className="text-4xl sm:text-5xl font-bold text-center text-white mb-12 border-b-4 border-[#b8b15b] pb-4 shadow-sm">
+        Nosso Cardápio Digital
+      </h1>
 
       <MenuSection title="Entradas" items={menuData.entradas} />
       <MenuSection title="Pratos Principais" items={menuData.pratosPrincipais} />
@@ -18,4 +17,4 @@ function cardapio() {
   );
 }
 
-export default cardapio;
+export default Cardapio;
