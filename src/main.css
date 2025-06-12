@@ -1,1 +1,62 @@
 @import "tailwindcss";
+.mais__hugo {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F9FAEA;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container__sobre {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.container__sobre > div:first-child {
+  flex: 1;
+}
+
+.title__sobre {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #12263a;
+}
+
+.paragrafo__sobre {
+  font-size: 1.1em;
+  color: #12263a;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.container__sobre img {
+  width: 220px;
+  padding-left: 0px;
+}
+
+@media (max-width: 768px) {
+  .container__sobre {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .container__sobre img {
+    margin: 20px 0 0 0;
+  }
+}
+.position__img{
+  transition: transform 0.3s ease;
+}
+.position__img img:hover{
+  transform: scale(1.05);
+}

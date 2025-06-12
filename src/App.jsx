@@ -12,8 +12,8 @@ function App() {
       <Routes>
         <Route path="/" element={
           <>
-            <Sobre />
-            <Reserva /> 
+            <Reserva />
+            <Sobre /> 
           </>
         } />
         <Route path="/reserva" element={<Reserva />}></Route>
