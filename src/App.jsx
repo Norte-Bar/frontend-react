@@ -3,7 +3,7 @@ import Header from "./components/header"
 import Sidebar from "./components/sidebar"
 import Sobre from "./pages/sobre";
 import Reserva from "./pages/reserva";
-
+import Cadarpio from "./pages/cadarpio"
 function App() {
 
   return (
@@ -14,9 +14,11 @@ function App() {
           <>
             <Sobre />
             <Reserva /> 
+            <Cadarpio/>
           </>
         } />
         <Route path="/reserva" element={<Reserva />}></Route>
+        <Route path="/cadarpio" element={<Cadarpio />}></Route>
         <Route path="*" element={<h1>404 - Página não encontrada</h1>} />
       </Routes>
     </BrowserRouter>

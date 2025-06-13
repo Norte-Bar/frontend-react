@@ -23,7 +23,7 @@ function Header() {
           </Link>
           
           {/** quando a page cardapio.jsx for criada ela precisa ser add nesse to, igual no de reserva */}
-          <Link to="/" className="border border-blue-950 text-blue-950 px-4 py-1 rounded-sm text-sm hover:bg-blue-950 hover:text-white transition">
+          <Link to="/cadarpio" className="border border-blue-950 text-blue-950 px-4 py-1 rounded-sm text-sm hover:bg-blue-950 hover:text-white transition">
             CARDAPIO
           </Link>
         </nav>
