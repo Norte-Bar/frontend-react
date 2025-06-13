@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={
           <>
-            <Reserva />
+            {/* <Reserva /> */}
             <Sobre /> 
           </>
         } />
