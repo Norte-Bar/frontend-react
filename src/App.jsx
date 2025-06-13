@@ -9,6 +9,9 @@ import SideBar from "./components/admin/sidebar";
 import Mesas from "./pages/admin/mesas";
 import Comidas from "./pages/admin/comidas";
 import Pedidos from "./pages/admin/pedidos";
+import Reservas from "./pages/admin/reservas";
+import Feedback from "./pages/admin/feedback";
+import Dashboard from "./pages/admin/dashboard";
 
 const LoadingSpinner = () => (
 	<div
@@ -63,7 +66,7 @@ const LoginRoute = () => {
 	}
 
 	if (isAuthenticated) {
-		return <Navigate to="/admin/dashboard" replace />;
+		return <Navigate to="/admin/mesas" replace />;
 	}
 
 	return <Login />;
@@ -123,44 +126,6 @@ const AdminLayout = ({ children }) => {
 	);
 };
 
-// const PrivateRoutes = () => {
-// 	return (
-// 		<PrivateLayout>
-// 			<Routes>
-// 				{/* Rota de login - redireciona se já estiver logado */}
-// 				<Route index element={<LoginRoute />} />
-
-// 				{/* Rotas protegidas */}
-// 				<Route
-// 					path="dashboard"
-// 					element={
-// 						<ProtectedRoute>
-// 							<SideBar />
-// 						</ProtectedRoute>
-// 					}>
-// 					<Route index element={<h1>Esse é o dashboard</h1>} />
-// 				</Route>
-
-// 				<Route
-// 					element={
-// 						<ProtectedRoute>
-// 							<SideBar />
-// 						</ProtectedRoute>
-// 					}>
-// 					<Route path="mesas" element={<Mesas />} />
-// 					<Route path="comidas" element={<Comidas />} />
-// 					<Route path="pedidos" element={<Pedidos />} />
-// 					<Route path="reservas" element={<h1>Essas são as reservas</h1>} />
-// 					<Route path="feedback" element={<h1>Esses são os feedbacks</h1>} />
-// 				</Route>
-
-// 				{/* Rota 404 para admin */}
-// 				<Route path="*" element={<h1>404 - Página administrativa não encontrada</h1>} />
-// 			</Routes>
-// 		</PrivateLayout>
-// 	);
-// };
-
 const PrivateRoutes = () => {
 	return (
 		<Routes>
@@ -168,19 +133,17 @@ const PrivateRoutes = () => {
 			<Route index element={<LoginRoute />} />
 
 			{/* Todas as rotas protegidas com AdminLayout */}
-			<Route
+			{/* <Route
 				path="dashboard"
 				element={
 					<ProtectedRoute>
 						<AdminLayout>
-							<div className="bg-white rounded-lg shadow-sm p-6">
-								<h1 className="text-2xl font-bold text-gray-800 mb-4">Dashboard</h1>
-								<p className="text-gray-600">Bem-vindo ao painel administrativo do Norte Bar!</p>
-							</div>
+							
+							<Dashboard />
 						</AdminLayout>
 					</ProtectedRoute>
 				}
-			/>
+			/> */}
 
 			<Route
 				path="mesas"
@@ -220,10 +183,11 @@ const PrivateRoutes = () => {
 				element={
 					<ProtectedRoute>
 						<AdminLayout>
-							<div className="bg-white rounded-lg shadow-sm p-6">
+							{/* <div className="bg-white rounded-lg shadow-sm p-6">
 								<h1 className="text-2xl font-bold text-gray-800 mb-4">Reservas</h1>
 								<p className="text-gray-600">Gerencie as reservas do estabelecimento.</p>
-							</div>
+							</div> */}
+							<Reservas />
 						</AdminLayout>
 					</ProtectedRoute>
 				}
@@ -234,10 +198,11 @@ const PrivateRoutes = () => {
 				element={
 					<ProtectedRoute>
 						<AdminLayout>
-							<div className="bg-white rounded-lg shadow-sm p-6">
+							{/* <div className="bg-white rounded-lg shadow-sm p-6">
 								<h1 className="text-2xl font-bold text-gray-800 mb-4">Feedbacks</h1>
 								<p className="text-gray-600">Visualize os feedbacks dos clientes.</p>
-							</div>
+							</div> */}
+							<Feedback />
 						</AdminLayout>
 					</ProtectedRoute>
 				}

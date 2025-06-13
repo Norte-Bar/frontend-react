@@ -2,8 +2,16 @@ import { CalendarClock, ChevronLeft, ChevronRight, LayoutDashboard, MessageCircl
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
+// const navItems = [
+// 	{ to: "/admin/dashboard", label: "Dashboard", icon: <LayoutDashboard size={20} /> },
+// 	{ to: "/admin/mesas", label: "Mesas", icon: <Table size={20} /> },
+// 	{ to: "/admin/comidas", label: "Comidas", icon: <Utensils size={20} /> },
+// 	{ to: "/admin/pedidos", label: "Pedidos", icon: <ScrollText size={20} /> },
+// 	{ to: "/admin/reservas", label: "Reservas", icon: <CalendarClock size={20} /> },
+// 	{ to: "/admin/feedback", label: "Feedback", icon: <MessageCircle size={20} /> },
+// ];
+
 const navItems = [
-	{ to: "/admin/dashboard", label: "Dashboard", icon: <LayoutDashboard size={20} /> },
 	{ to: "/admin/mesas", label: "Mesas", icon: <Table size={20} /> },
 	{ to: "/admin/comidas", label: "Comidas", icon: <Utensils size={20} /> },
 	{ to: "/admin/pedidos", label: "Pedidos", icon: <ScrollText size={20} /> },
