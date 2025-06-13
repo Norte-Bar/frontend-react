@@ -12,6 +12,7 @@ import Pedidos from "./pages/admin/pedidos";
 import Reservas from "./pages/admin/reservas";
 import Feedback from "./pages/admin/feedback";
 import Dashboard from "./pages/admin/dashboard";
+import Cardapio from "./pages/cardapio";
 
 const LoadingSpinner = () => (
 	<div
@@ -104,10 +105,13 @@ const PublicRoutes = () => {
 						<>
 							<Sobre />
 							<Reserva />
+							<Cardapio />
 						</>
 					}
 				/>
 				<Route path="/reserva" element={<Reserva />} />
+				<Route path="/sobre" element={<Sobre />} />
+				<Route path="/cardapio" element={<Cardapio />} />
 				<Route path="*" element={<h1>404 - Página não encontrada</h1>} />
 			</Routes>
 		</PublicLayout>
